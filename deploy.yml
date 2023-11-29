@@ -8,13 +8,14 @@
     reverse_template:
       eye-jagoinfra: "db-ji-reverse.conf.j2"
     dbs: "{{ hostvars[inventory_hostname][region].dbs }}"
-    reverse_zone_prefix: "{{ dbs[0].ip.split('.')[0:3] | join('.') }}"
+    #reverse_zone_prefix: "{{ dbs[0].ip.split('.')[0:3] | join('.') }}"
 
   tasks:
     - name: Set region based on current host
       set_fact:
         region: "{{ item }}"
-      when: "inventory_hostname in groups[item] or item == 'ji_cn' and inventory_hostname in groups['ji'] + groups['cn']"
+          #when: "inventory_hostname in groups[item] or item == 'ji_cn' and inventory_hostname in groups['ji'] + groups['cn']"
+      when: "inventory_hostname in groups[item] or item == 'ji'"
       with_items: "{{ groups.keys() }}"
     - name: Check for duplicate IPs in A records
       block:

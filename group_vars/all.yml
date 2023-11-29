@@ -1,5 +1,5 @@
 ######################################
-# Common DNS (For sg and china)
+# Common DNS 
 ######################################
 home: /var/local/dns
 common_dns: &common_dns
@@ -19,21 +19,24 @@ common_dns: &common_dns
     - domain_name: nfs-jagoinfra
       ip: 192.168.10.228
       type: A
+    - domain_name: nfs2-jagoinfra
+      ip: 192.168.10.230
+      type: A
 ##
 ji:
   <<: *common_dns
-###
-cn:
-  <<: *common_dns
-###
-us:
-  dbs:
-     - domain_name: ny5-dtlvm-cs01
-       ip: 10.202.208.10
-       type: A
-     - domain_name: www.csdb.prod
-       ip: ny5-dtlvm-cs01
-       type: CNAME
-     - domain_name: ny5-dtlvm-zookeeper01
-       ip: 10.202.208.11
-       type: A
+####
+#cn:
+#  <<: *common_dns
+####
+#us:
+#  dbs:
+#     - domain_name: ny5-dtlvm-cs01
+#       ip: 10.202.208.10
+#       type: A
+#     - domain_name: www.csdb.prod
+#       ip: ny5-dtlvm-cs01
+#       type: CNAME
+#     - domain_name: ny5-dtlvm-zookeeper01
+#       ip: 10.202.208.11
+#       type: A

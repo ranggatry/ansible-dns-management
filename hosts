@@ -1,0 +1,7 @@
+all:
+  children:
+    ji:
+      hosts:
+        eye-jagoinfra:
+          ansible_host: 192.168.10.233
+          ansible_user: root

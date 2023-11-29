@@ -1,0 +1,39 @@
+######################################
+# Common DNS (For sg and china)
+######################################
+home: /var/local/dns
+common_dns: &common_dns
+  dbs:
+    - domain_name: "@"
+      ip: eye-jagoinfra.ji.
+      type: NS
+    - domain_name: eye-jagoinfra
+      ip: 192.168.10.233
+      type: A
+    - domain_name: web-jagoinfra
+      ip: 192.168.10.220
+      type: A
+    - domain_name: ssh-jagoinfra
+      ip: 192.168.10.225
+      type: A
+    - domain_name: nfs-jagoinfra
+      ip: 192.168.10.228
+      type: A
+##
+ji:
+  <<: *common_dns
+###
+cn:
+  <<: *common_dns
+###
+us:
+  dbs:
+     - domain_name: ny5-dtlvm-cs01
+       ip: 10.202.208.10
+       type: A
+     - domain_name: www.csdb.prod
+       ip: ny5-dtlvm-cs01
+       type: CNAME
+     - domain_name: ny5-dtlvm-zookeeper01
+       ip: 10.202.208.11
+       type: A

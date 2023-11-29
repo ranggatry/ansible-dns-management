@@ -1,0 +1,17 @@
+all:
+  children:
+    sg:
+      hosts:
+        oxygen1:
+          ansible_host: 10.1.0.201
+          ansible_user: root
+    us:
+      hosts:
+        ny5-dtlsys01:
+          ansible_host: 10.202.208.161
+          ansible_user: root
+    cn:
+      hosts:
+        shd-dtlsys02:
+          ansible_host: 10.2.1.22
+          ansible_user: root

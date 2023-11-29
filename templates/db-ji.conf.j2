@@ -1,0 +1,17 @@
+; BIND data file for dtl
+;
+$TTL    120
+$ORIGIN ji.
+@       IN      SOA     eye-jagoinfra.ji. root.ji. (
+                            669         ; Serial 
+                           1800         ; Refresh
+                           1800         ; Retry
+                        2419200         ; Expire
+                            120 )       ; Negative Cache TTL
+
+{% if dbs is defined %}
+{%   for db in dbs %}
+{{ db.domain_name }}		IN		{{ db.type|default('A') }}		{{ db.ip }} {% if db.comment is defined %}		;{{ db.comment }} {% endif %}
+
+{%   endfor %}
+{% endif %}

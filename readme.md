@@ -9,6 +9,11 @@ ansible-playbook -i hosts deploy.yml
 vim hosts
 ```
 
+### Modify NS list
+```
+vim group_vars/all.yml
+```
+
 ### Adjust tld domain 
 You must edit your tld domain from [ji] to your desired tld domain [.com/.net/.org]
 ```

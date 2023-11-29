@@ -19,9 +19,6 @@ common_dns: &common_dns
     - domain_name: nfs-jagoinfra
       ip: 192.168.10.228
       type: A
-    - domain_name: nfs2-jagoinfra
-      ip: 192.168.10.230
-      type: A
 ##
 ji:
   <<: *common_dns

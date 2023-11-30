@@ -11,6 +11,14 @@
     #reverse_zone_prefix: "{{ dbs[0].ip.split('.')[0:3] | join('.') }}"
 
   tasks:
+    - name: Display Git Status
+      command: git status
+      args:
+        chdir: /home/rangga/ansible-dns-management
+      register: git_status
+    
+    - debug:
+        var: git_status.stdout_lines
     - name: Get the current branch of the local repository
       command: git rev-parse --abbrev-ref HEAD
       args:

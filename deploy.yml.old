@@ -11,16 +11,22 @@
     #reverse_zone_prefix: "{{ dbs[0].ip.split('.')[0:3] | join('.') }}"
 
   tasks:
-    - name: Check if local repository is up to date
-      command: "git fetch origin && git status -uno"
-      register: git_status
-      args:
-        chdir: "/home/rangga/ansible-dns-management"# Change to the directory where the repository is located
+    - name: Check if git repository is up to date
+      git:
+        repo: "https://github.com/ranggatry/ansible-dns-management"
+        version: HEAD
+        update: yes
+        clone: no
+      register: result
+      changed_when: False
 
-    - name: Fail if local repository is not up to date
+    - name: Fail if git repository is not up to date
       fail:
-        msg: "You must push your repo first, then run Ansible again."
-      when: "'Your branch is behind' in git_status.stdout"
+        msg: "Git repository is not up to date. Please push changes before running deployment."
+      when: not result.changed
+    - name: Debug output of git result
+      debug:
+        var: result
 
     - name: Set region based on current host
       set_fact:

@@ -11,31 +11,49 @@
     #reverse_zone_prefix: "{{ dbs[0].ip.split('.')[0:3] | join('.') }}"
 
   tasks:
+##    - name: Display Git Status
+##      command: git status
+##      args:
+##        chdir: /home/rangga/ansible-dns-management
+##      register: git_status
+##    
+##    - debug:
+##        var: git_status.stdout_lines
     - name: Get the current branch of the local repository
       command: git rev-parse --abbrev-ref HEAD
       args:
         chdir: "{{ inventory_dir }}"
       register: current_branch
       delegate_to: localhost
-    
-    - name: Check for local changes or untracked files
-      command: git diff --exit-code
+
+    - name: Fetch the latest changes from the remote repository
+      command: git fetch origin
       args:
         chdir: "{{ inventory_dir }}"
-      ignore_errors: yes
-      register: git_diff
       delegate_to: localhost
-    
-    - name: Display message and exit if there are local changes
+
+    - name: Check if the local branch is behind the remote branch
+      command: git status -uno -b
+      args:
+        chdir: "{{ inventory_dir }}"
+      register: git_status
+      changed_when: false
+      delegate_to: localhost
+    - name: Debugging Git Status
+      debug:
+        msg: "After git add and git status"
+      delegate_to: localhost
+
+    - name: Display message and exit if local branch is behind
       fail:
         msg: "You must push first. Please update your local branch ({{ current_branch.stdout }}) before deploying."
-      when: git_diff.rc != 0
-      delegate_to: localhost
-    
+      when: "'Your branch is up to date with' not in git_status.stdout"
+        #delegate_to: localhost
+
     - name: Show error message if changes are not pushed
       debug:
         msg: "You must push your changes first."
-      when: "'nothing to commit' not in git_diff.stderr_lines"
+      when: "'nothing to commit' not in git_status.stdout_lines"
       delegate_to: localhost
     - name: Set region based on current host
       set_fact:

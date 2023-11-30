@@ -11,28 +11,16 @@
     #reverse_zone_prefix: "{{ dbs[0].ip.split('.')[0:3] | join('.') }}"
 
   tasks:
-    - name: Get the current branch of the local repository
-      command: git rev-parse --abbrev-ref HEAD
-      args:
-        chdir: /home/rangga/ansible-dns-management
-      register: current_branch
-
-    - name: Fetch the latest changes from the remote repository
-      command: git fetch origin
-      args:
-        chdir: /home/rangga/ansible-dns-management
-
-    - name: Check if the local branch is behind the remote branch
-      command: git status -uno -b
-      args:
-        chdir: /home/rangga/ansible-dns-management
+    - name: Check if the local repository is up to date
+      local_action:
+        module: command
+        cmd: git status
       register: git_status
-      changed_when: false
-
-    - name: Display message and exit if local branch is behind
-      fail:
-        msg: "You must push first. Please update your local branch ({{ current_branch.stdout }}) before deploying."
-      when: "'Your branch is behind' in git_status.stdout"
+      ignore_errors: yes
+    - name: Validate repository status
+      debug:
+        msg: "Repository is up to date, you can proceed."
+      when: "'tree clean' in git_status.stdout_lines"
 
     - name: Show error message if changes are not pushed
       debug:

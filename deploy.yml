@@ -28,7 +28,7 @@
     
     - name: Display message and exit if there are local changes
       fail:
-        msg: "You must push first. Please update your local branch ({{ current_branch.stdout }}) before deploying."
+        msg: "You must push or pull first. Please update your local branch ({{ current_branch.stdout }}) before deploying."
       when: git_diff.rc != 0
       delegate_to: localhost
     
